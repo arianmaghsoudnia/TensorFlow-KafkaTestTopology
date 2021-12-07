@@ -10,7 +10,7 @@ To reproduce this issue please use the following test units.
 
 ## Test Units
 
-./app/src/test/java/com/streamer/TestTFKafka.java
+./src/test/java/com/streamer/TestTFKafka.java
 
 Contains all the test units to reproduce the problem. 
 TF functionality is tested using two Kafka topologies.
