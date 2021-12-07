@@ -10,15 +10,13 @@ import org.apache.kafka.streams.kstream.KTable;
 import org.apache.kafka.streams.kstream.Materialized;
 import org.junit.jupiter.api.Test;
 import com.bakdata.fluent_kafka_streams_tests.junit5.TestTopologyExtension;
-import org.tensorflow.SavedModelBundle;
+import org.tensorflow.Graph;
 
 public class TestTFKafka {
 
     private String InputTopicName = "input-topic";
     private String CoefficientsTopicName = "coefficients-topic";
     private String OutputTopicName = "output-topic";
-
-    private String ModelPath = "/home/arian/Blockbax/Projects/tf_java_test/model";
 
     private TestTopologyExtension<String, Float> testTopology;
 
@@ -92,42 +90,21 @@ public class TestTFKafka {
         return testTopology;
     }
 
-    @Test
-    public void testSimpleForwarder(){
-        testTopology = new TestTopologyExtension<>(this::createSimpleForwarderTopology, getProperties());
-        testTopology.start();
-        produceInput("TestInput",12.3f);
-        System.out.print("Latest retreived output is " +  getOneOutput().value() + "\n");
-    }
-
-    @Test
-    public void testForwarderWithKTable(){
-        testTopology = new TestTopologyExtension<>(this::createTopologyWithKTable, getProperties());
-        testTopology.start();
-        produceInput("TestInput",12.3f);
-        produceCoefficients("TestInput",2f);
-
-        System.out.print("Latest retreived output is " +  getOneOutput().value() + "\n");
-    }
-
     @Test void testTFWithSimpleTopology(){
         testTopology = new TestTopologyExtension<>(this::createSimpleForwarderTopology, getProperties());
         testTopology.start();
-        SavedModelBundle model = SavedModelBundle.load(ModelPath);
-        System.out.print("Model fetched"+model.signatures());
+        Graph g = new Graph();
+        System.out.print("Graph created\n");
     }
 
     @Test void testTFWithKTable(){
         testTopology = new TestTopologyExtension<>(this::createTopologyWithKTable, getProperties());
         testTopology.start();
-        SavedModelBundle model = SavedModelBundle.load(ModelPath);
-        System.out.print("Model fetched"+model.signatures());
+        Graph g = new Graph();
+        System.out.print("Graph created\n");
     }
 
 
 }
-
-
-
 
 
